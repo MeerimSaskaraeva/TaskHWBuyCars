@@ -15,12 +15,13 @@ import java.util.List;
 
 public class PersonServiceImpl implements PersonService {
     List<Person>people=new ArrayList<>();
+    List<Car>cars= new ArrayList<>();
 
 
     @Override
     public String createPerson(List<Person> people) {
         this.people.addAll(people);
-        return "Person create successfully ";
+        return "Person created successfully";
     }
 
     @Override
@@ -69,35 +70,33 @@ public class PersonServiceImpl implements PersonService {
         LinkedList<Car>c=new LinkedList<>();
         for (Person person1 : person) {
             for (Car car : cars) {
-                if (person1.getName().equals(name) && car.getName().equals(carName)){
+                if (person1.getName().equals(name) && car.getName().equals(carName)) {
 
+                    BigDecimal s = person1.getMoney();
+                    System.out.println("A Person has: "+s);
+                    BigDecimal d = car.getPrice();
+                    System.out.println("Car cost: "+d);
+                    if (s.compareTo(d) > 0) {
+                        String cName= String.valueOf(car.getName().equals(carName));
+                        CarServiceImpl carService=new CarServiceImpl();
+                        System.out.println(carService.removeCar(cName, cars));
 
-                    p.add(person1);
-                    c.addLast(car);
-                    boolean z= person1.getCars().addAll(c);
-                    BigDecimal s=person1.getMoney().max(car.getPrice());
-                    System.out.println(s);
-                    BigDecimal d=person1.getMoney().subtract(car.getPrice());
-                    System.out.println(d);
-                    //boolean b = s.compareTo(d) > 0;
+                        p.add(person1);
+                        c.addLast(car);
 
-                    if (s.compareTo(d)>0) {
-                        BigDecimal carPrice = car.getPrice();
-                        BigDecimal person1Money = person1.getMoney();
-                        BigDecimal remainder = person1Money.remainder(carPrice);
-                        System.out.println(remainder);
+                        boolean z = person1.getCars().addAll(c);
 
-
-
-                            System.out.println(p + ""+c+"" +z);
-                            return "This CAR buy successfully!";
-
-                    }
+                        System.out.println(p + "" + c + "" + z);
+                        return "Payment for the car was successful!";
+                        }
+                    else if (s.compareTo(d) < 0){
+                        return "Not enough money!"; }
                 }
             }
+
         }
 
-        return "Error";
+        return "No person's name or car's name found!";
     }
 
     @Override
